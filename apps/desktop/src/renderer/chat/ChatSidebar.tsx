@@ -6,6 +6,7 @@ export function ChatSidebar() {
   const setMode = useProjectStore((s) => s.setMode);
   const messages = useProjectStore((s) => s.messages);
   const sendChat = useProjectStore((s) => s.sendChat);
+  const chatInFlight = useProjectStore((s) => s.chatInFlight);
   const confirm = useProjectStore((s) => s.confirm);
   const resolveConfirm = useProjectStore((s) => s.resolveConfirm);
   const [text, setText] = useState("");
@@ -44,9 +45,10 @@ export function ChatSidebar() {
         />
         <button
           type="button"
+          disabled={chatInFlight}
           onClick={() => {
             const value = text.trim();
-            if (!value) return;
+            if (!value || chatInFlight) return;
             setText("");
             void sendChat(value);
           }}

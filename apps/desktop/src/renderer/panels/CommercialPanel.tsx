@@ -19,10 +19,18 @@ export function CommercialPanel() {
           <button
             type="button"
             onClick={async () => {
+              const existingCustomer = commercial.customers.find(
+                (c) => c.name === customerName,
+              );
+              const existingTable = commercial.priceTables.find(
+                (t) => t.name === "Default",
+              );
               await window.movel?.commercial.upsertCustomer({
+                ...(existingCustomer ? { id: existingCustomer.id } : {}),
                 name: customerName,
               });
               await window.movel?.commercial.upsertPriceTable({
+                ...(existingTable ? { id: existingTable.id } : {}),
                 name: "Default",
                 bindings: [
                   { sku: "MOD-BASE-BOX", unitPrice: 450, currency: "BRL" },
@@ -40,8 +48,12 @@ export function CommercialPanel() {
         <button
           type="button"
           onClick={async () => {
-            const customer = commercial.customers[0];
-            const table = commercial.priceTables[0];
+            const customer =
+              commercial.customers.find((c) => c.name === customerName) ??
+              commercial.customers[0];
+            const table =
+              commercial.priceTables.find((t) => t.name === "Default") ??
+              commercial.priceTables[0];
             if (!customer || !table || !window.movel) {
               setStatus("Need customer and price table");
               return;

@@ -58,11 +58,19 @@ export function createOpenAIProvider(baseURL?: string, id = "openai"): LlmProvid
           message: {
             role: "assistant",
             content: choice.content,
-            toolCalls: choice.tool_calls.map((c) => ({
-              id: c.id,
-              name: c.function.name,
-              arguments: JSON.parse(c.function.arguments || "{}") as unknown,
-            })),
+            toolCalls: choice.tool_calls.map((c) => {
+              let argumentsValue: unknown = {};
+              try {
+                argumentsValue = JSON.parse(c.function.arguments || "{}");
+              } catch {
+                argumentsValue = {};
+              }
+              return {
+                id: c.id,
+                name: c.function.name,
+                arguments: argumentsValue,
+              };
+            }),
           },
         };
       }

@@ -9,19 +9,51 @@ const proposeSchema = z.object({
   count: z.number().int().positive().max(20).default(3),
 });
 
+function placementForWall(
+  wall: z.infer<typeof proposeSchema>["wall"],
+  index: number,
+  room: { widthMm: number; depthMm: number },
+): LayoutPlan["placements"][number] {
+  const spacing = 600;
+  switch (wall) {
+    case "front":
+      return {
+        position: { x: index * spacing, y: 0, z: room.depthMm },
+        rotationYDeg: 180,
+      };
+    case "left":
+      return {
+        position: { x: 0, y: 0, z: index * spacing },
+        rotationYDeg: 90,
+      };
+    case "right":
+      return {
+        position: { x: room.widthMm, y: 0, z: index * spacing },
+        rotationYDeg: -90,
+      };
+    default:
+      return {
+        position: { x: index * spacing, y: 0, z: 0 },
+        rotationYDeg: 0,
+      };
+  }
+}
+
 export const proposeLayoutTool: ToolSpec = {
   name: "propose_layout",
   description: "Propose a layout plan along a wall",
   mode: ["build", "autonomous"],
   inputSchema: proposeSchema,
-  async execute(_ctx, input) {
+  async execute(ctx, input) {
     const parsed = proposeSchema.parse(input);
+    const room = ctx.history.state.room;
     const placements: LayoutPlan["placements"] = [];
     for (let i = 0; i < parsed.count; i += 1) {
+      const { position, rotationYDeg } = placementForWall(parsed.wall, i, room);
       placements.push({
         moduleId: parsed.moduleId,
-        position: { x: i * 600, y: 0, z: 0 },
-        rotationYDeg: 0,
+        position,
+        rotationYDeg,
         paramOverrides: {},
         materialOverrides: {},
       });

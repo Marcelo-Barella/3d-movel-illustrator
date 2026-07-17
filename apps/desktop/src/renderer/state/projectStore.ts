@@ -16,6 +16,7 @@ type ProjectStore = {
   model: string;
   messages: Array<{ role: string; content: string }>;
   confirm: { id: string; prompt: string; payload: unknown } | null;
+  chatInFlight: boolean;
   selectedModuleId: string | null;
   setMode: (mode: AgentMode) => void;
   setProvider: (providerId: string, model: string) => void;
@@ -49,6 +50,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   model: "mock",
   messages: [],
   confirm: null,
+  chatInFlight: false,
   selectedModuleId: "base_box",
   setMode: (mode) => set({ mode }),
   setProvider: (providerId, model) => set({ providerId, model }),
@@ -101,27 +103,33 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     });
   },
   sendChat: async (text) => {
-    const state = get();
-    const messages = [...state.messages, { role: "user", content: text }];
-    set({ messages });
-    if (!window.movel) return;
-    const result = await window.movel.agent.chat({
-      providerId: state.providerId,
-      model: state.model,
-      mode: state.mode,
-      messages,
-    });
-    const nextMessages = (result.messages as Array<{ role: string; content?: string }>)
-      .filter((m) => m.role === "user" || m.role === "assistant")
-      .map((m) => ({
-        role: m.role,
-        content: typeof m.content === "string" ? m.content : JSON.stringify(m.content ?? ""),
-      }));
-    set({
-      messages: nextMessages,
-      scene: result.scene ?? state.scene,
-      commercial: result.commercial ?? state.commercial,
-    });
+    if (get().chatInFlight) return;
+    set({ chatInFlight: true });
+    try {
+      const state = get();
+      const messages = [...state.messages, { role: "user", content: text }];
+      set({ messages });
+      if (!window.movel) return;
+      const result = await window.movel.agent.chat({
+        providerId: state.providerId,
+        model: state.model,
+        mode: state.mode,
+        messages,
+      });
+      const nextMessages = (result.messages as Array<{ role: string; content?: string }>)
+        .filter((m) => m.role === "user" || m.role === "assistant")
+        .map((m) => ({
+          role: m.role,
+          content: typeof m.content === "string" ? m.content : JSON.stringify(m.content ?? ""),
+        }));
+      set({
+        messages: nextMessages,
+        scene: result.scene ?? state.scene,
+        commercial: result.commercial ?? state.commercial,
+      });
+    } finally {
+      set({ chatInFlight: false });
+    }
   },
   resolveConfirm: async (accepted) => {
     const id = get().confirm?.id;
