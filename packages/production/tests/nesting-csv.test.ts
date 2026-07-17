@@ -4,7 +4,7 @@ import { listAdapters } from "../src/adapters/registry";
 
 describe("nesting csv", () => {
   it("uses frozen header", () => {
-    const csv = toNestingCsv({ parts: [], diagnostics: [] });
+    const csv = toNestingCsv({ parts: [], hardware: [], diagnostics: [] });
     expect(csv.split("\n")[0]).toBe(
       "PartId,Label,Material,ThicknessMm,LengthMm,WidthMm,Grain,Quantity,EdgeBandL,EdgeBandW,EdgeBandR,EdgeBandB,ModuleInstanceId,MaterialSku",
     );

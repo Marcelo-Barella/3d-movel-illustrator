@@ -16,7 +16,7 @@ export function createOrderHandoff(input: {
       },
     ]);
   }
-  const diagnostics =
+  const warnings =
     unpriced.length > 0 && input.policy === "warn"
       ? [
           {
@@ -26,12 +26,12 @@ export function createOrderHandoff(input: {
           },
         ]
       : [];
-  void diagnostics;
   return ok({
     quoteId: input.quote.id,
     revision: input.quote.revision,
     customerId: input.quote.customerId,
     productionExportDir: input.productionExportDir,
     createdAt: new Date().toISOString(),
+    warnings,
   });
 }

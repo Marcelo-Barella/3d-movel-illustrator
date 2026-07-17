@@ -13,6 +13,7 @@ export function buildMachiningIR(
   pack: CatalogPack,
 ): MachiningIR {
   const parts: MachinedPart[] = [];
+  const hardwareQty = new Map<string, number>();
   const diagnostics: Diagnostic[] = [];
 
   for (const inst of scene.instances) {
@@ -28,8 +29,12 @@ export function buildMachiningIR(
     }
     const params = resolveParams(mod, inst.paramOverrides);
     const panels = expandPanels(mod, params, pack.materials);
-    // touch bom for side-effect free readiness
-    void explodeBom(mod, params);
+    for (const line of explodeBom(mod, params)) {
+      hardwareQty.set(
+        line.sku,
+        (hardwareQty.get(line.sku) ?? 0) + line.qty,
+      );
+    }
 
     for (const panel of panels) {
       if (panel.ops.length === 0) {
@@ -64,5 +69,10 @@ export function buildMachiningIR(
     }
   }
 
-  return { parts, diagnostics };
+  const hardware = [...hardwareQty.entries()].map(([sku, qty]) => ({
+    sku,
+    qty,
+  }));
+
+  return { parts, hardware, diagnostics };
 }

@@ -56,7 +56,7 @@ export function buildDocuments(ir: MachiningIR): {
   const hardware: DocTable = {
     name: "hardware",
     headers: ["Sku", "Qty"],
-    rows: [],
+    rows: ir.hardware.map((line) => [line.sku, line.qty]),
   };
 
   return { bom, cutList, edgeBand, hardware };

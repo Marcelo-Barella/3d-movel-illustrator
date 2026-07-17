@@ -39,12 +39,15 @@ export type Quote = {
   issuedAt?: string;
 };
 
+import type { Diagnostic } from "@movel/shared";
+
 export type HandoffManifest = {
   quoteId: string;
   revision: number;
   customerId: string;
   productionExportDir?: string;
   createdAt: string;
+  warnings: Diagnostic[];
 };
 
 export type CommercialState = {

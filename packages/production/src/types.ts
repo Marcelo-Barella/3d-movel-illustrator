@@ -22,8 +22,14 @@ export type MachinedPart = {
   quantity: number;
 };
 
+export type HardwareLine = {
+  sku: string;
+  qty: number;
+};
+
 export type MachiningIR = {
   parts: MachinedPart[];
+  hardware: HardwareLine[];
   diagnostics: Diagnostic[];
 };
 

@@ -36,7 +36,7 @@ describe("adapter goldens", () => {
   it("homag left panel", () => {
     const ir = fixtureIr();
     const left = ir.parts.find((p) => p.partId.endsWith("_left"))!;
-    const result = getAdapter("homag").emit({ parts: [left], diagnostics: [] });
+    const result = getAdapter("homag").emit({ parts: [left], hardware: [], diagnostics: [] });
     const file = result.files[0]!;
     const expected = readFileSync(
       join(here, "goldens/homag/left.mpr"),
@@ -48,7 +48,7 @@ describe("adapter goldens", () => {
   it("biesse left panel", () => {
     const ir = fixtureIr();
     const left = ir.parts.find((p) => p.partId.endsWith("_left"))!;
-    const result = getAdapter("biesse").emit({ parts: [left], diagnostics: [] });
+    const result = getAdapter("biesse").emit({ parts: [left], hardware: [], diagnostics: [] });
     const expected = readFileSync(
       join(here, "goldens/biesse/left.bpp"),
       "utf8",
@@ -63,6 +63,7 @@ describe("adapter goldens", () => {
     const left = ir.parts.find((p) => p.partId.endsWith("_left"))!;
     const result = getAdapter("generic").emit({
       parts: [left],
+      hardware: [],
       diagnostics: [],
     });
     const dxf = result.files.find((f) => f.relativePath.endsWith(".dxf"))!;
