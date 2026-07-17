@@ -67,6 +67,15 @@ importers:
         specifier: ^0.13.9
         version: 0.13.9
 
+  packages/importers:
+    dependencies:
+      '@movel/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@movel/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/production:
     dependencies:
       '@movel/catalog':
