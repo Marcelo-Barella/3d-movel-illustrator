@@ -15,6 +15,33 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@26.1.1)
 
+  packages/agent:
+    dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.52.0
+        version: 0.52.0
+      '@movel/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@movel/commercial':
+        specifier: workspace:*
+        version: link:../commercial
+      '@movel/production':
+        specifier: workspace:*
+        version: link:../production
+      '@movel/scene':
+        specifier: workspace:*
+        version: link:../scene
+      '@movel/shared':
+        specifier: workspace:*
+        version: link:../shared
+      openai:
+        specifier: ^5.3.0
+        version: 5.23.2(zod@3.25.76)
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.76
+
   packages/catalog:
     dependencies:
       '@movel/shared':
@@ -61,6 +88,10 @@ importers:
   packages/shared: {}
 
 packages:
+
+  '@anthropic-ai/sdk@0.52.0':
+    resolution: {integrity: sha512-d4c+fg+xy9e46c8+YnrrgIQR45CZlAi7PwdzIfDXDM6ACxEZli1/fxhURsq30ZpMZy6LvSkr41jGq5aF5TD7rQ==}
+    hasBin: true
 
   '@esbuild/aix-ppc64@0.28.1':
     resolution: {integrity: sha512-Svl7tq8k/08+p6CXPpRjQ1fKX+1odH/BQbb48fV6fj3CWHhsoIOoY87w1oHXm0qEpkIK3ZfVgp0hed3XBXzXMQ==}
@@ -517,6 +548,18 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  openai@5.23.2:
+    resolution: {integrity: sha512-MQBzmTulj+MM5O8SKEk/gL8a7s5mktS9zUtAkU257WjvobGc9nKcBuVwjyEEcb9SI8a8Y2G/mzn3vm9n1Jlleg==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
+
   pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
 
@@ -691,7 +734,12 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
 snapshots:
+
+  '@anthropic-ai/sdk@0.52.0': {}
 
   '@esbuild/aix-ppc64@0.28.1':
     optional: true
@@ -1026,6 +1074,10 @@ snapshots:
 
   nanoid@3.3.16: {}
 
+  openai@5.23.2(zod@3.25.76):
+    optionalDependencies:
+      zod: 3.25.76
+
   pako@0.2.9: {}
 
   pako@1.0.11: {}
@@ -1212,3 +1264,5 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  zod@3.25.76: {}
