@@ -21,6 +21,18 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/production:
+    dependencies:
+      '@movel/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@movel/scene':
+        specifier: workspace:*
+        version: link:../scene
+      '@movel/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/scene:
     dependencies:
       '@movel/shared':
