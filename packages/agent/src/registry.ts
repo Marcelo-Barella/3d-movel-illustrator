@@ -1,5 +1,16 @@
-import { buildQuoteTool, exportCncTool, exportDocumentsTool, exportOrderHandoffTool, issueQuoteRevisionTool } from "./tools/build_quote.js";
+import {
+  buildQuoteTool,
+  exportCncTool,
+  exportDocumentsTool,
+  exportOrderHandoffTool,
+  issueQuoteRevisionTool,
+} from "./tools/build_quote.js";
+import { exportNestingTool } from "./tools/export_nesting.js";
 import { listCatalogTool, searchCatalogTool } from "./tools/list_catalog.js";
+import {
+  listCustomersTool,
+  upsertCustomerTool,
+} from "./tools/list_customers.js";
 import {
   moveInstanceTool,
   placeModuleTool,
@@ -22,9 +33,12 @@ const ALL_TOOLS: ToolSpec[] = [
   removeInstanceTool,
   proposeLayoutTool,
   applyLayoutTool,
+  listCustomersTool,
+  upsertCustomerTool,
   buildQuoteTool,
   issueQuoteRevisionTool,
   exportDocumentsTool,
+  exportNestingTool,
   exportCncTool,
   exportOrderHandoffTool,
 ];

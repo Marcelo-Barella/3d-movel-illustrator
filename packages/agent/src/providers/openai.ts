@@ -74,7 +74,3 @@ export function createOpenAIProvider(baseURL?: string, id = "openai"): LlmProvid
 }
 
 export const openaiProvider = createOpenAIProvider();
-export const deepseekProvider = createOpenAIProvider(
-  "https://api.deepseek.com",
-  "deepseek",
-);
