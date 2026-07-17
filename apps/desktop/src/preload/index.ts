@@ -18,14 +18,14 @@ const api = {
   },
   agent: {
     chat: (payload: unknown) => ipcRenderer.invoke("agent:chat", payload),
-    confirm: (accepted: boolean) =>
-      ipcRenderer.invoke("agent:confirm", accepted),
+    confirm: (id: string, accepted: boolean) =>
+      ipcRenderer.invoke("agent:confirm", id, accepted),
     onConfirmRequest: (
-      cb: (payload: { prompt: string; payload: unknown }) => void,
+      cb: (payload: { id: string; prompt: string; payload: unknown }) => void,
     ) => {
       const listener = (
         _e: Electron.IpcRendererEvent,
-        data: { prompt: string; payload: unknown },
+        data: { id: string; prompt: string; payload: unknown },
       ) => cb(data);
       ipcRenderer.on("agent:confirm-request", listener);
       return () => ipcRenderer.removeListener("agent:confirm-request", listener);
@@ -49,6 +49,9 @@ const api = {
   },
   catalog: {
     importCsv: (text: string) => ipcRenderer.invoke("catalog:importCsv", text),
+  },
+  file: {
+    readText: (path: string) => ipcRenderer.invoke("file:readText", path),
   },
   dialog: {
     openDirectory: () => ipcRenderer.invoke("dialog:openDirectory"),

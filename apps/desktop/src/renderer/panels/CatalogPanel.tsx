@@ -39,21 +39,14 @@ export function CatalogPanel() {
             onClick={async () => {
               const path = await window.movel?.dialog.openFile();
               if (!path || !window.movel) return;
-              const text = await fetch(`file://${path}`)
-                .then((r) => r.text())
-                .catch(async () => {
-                  const res = await window.movel.catalog.importCsv(
-                    "ID,NAME,CATEGORY,WIDTH,HEIGHT,DEPTH,SKU\nimp1,Imported,base,600,720,560,SKU1\n",
-                  );
-                  setImportReport(JSON.stringify(res.diagnostics ?? res, null, 2));
-                  await useProjectStore.getState().refresh();
-                  return "";
-                });
-              if (text) {
-                const res = await window.movel.catalog.importCsv(text);
-                setImportReport(JSON.stringify(res.diagnostics ?? [], null, 2));
-                await useProjectStore.getState().refresh();
+              const read = await window.movel.file.readText(path);
+              if (!read.ok) {
+                setImportReport(JSON.stringify(read.diagnostics ?? read, null, 2));
+                return;
               }
+              const res = await window.movel.catalog.importCsv(read.value);
+              setImportReport(JSON.stringify(res.diagnostics ?? [], null, 2));
+              await useProjectStore.getState().refresh();
             }}
           >
             Import CSV

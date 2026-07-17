@@ -95,7 +95,7 @@ export const applyLayoutTool: ToolSpec = {
         materialOverrides: p.materialOverrides,
       });
       if (!r.ok) {
-        ctx.history.endGroup();
+        ctx.history.cancelGroup();
         return { ok: false, diagnostics: r.diagnostics };
       }
     }

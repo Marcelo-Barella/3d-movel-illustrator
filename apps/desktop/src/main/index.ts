@@ -1,4 +1,4 @@
-import { loadSamplePack } from "@movel/catalog";
+import { loadSamplePack, loadPackFromDir, savePackToDir } from "@movel/catalog";
 import {
   createCustomer,
   createOrderHandoff,
@@ -10,7 +10,7 @@ import {
 import { importCatalogListCsv } from "@movel/importers";
 import { History } from "@movel/scene";
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
-import { mkdir, writeFile, cp } from "node:fs/promises";
+import { mkdir, writeFile, cp, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { exportProductionBundle } from "./export-service";
 import { getKey, setKey } from "./keychain";
@@ -27,9 +27,11 @@ let projectDir: string | null = null;
 let project: ProjectState = createEmptyProject();
 let history = new History(project.scene);
 let pack = loadSamplePack();
-let pendingConfirm:
-  | { resolve: (v: boolean) => void; prompt: string; payload: unknown }
-  | null = null;
+let pendingConfirms = new Map<
+  string,
+  { resolve: (v: boolean) => void; prompt: string; payload: unknown }
+>();
+let confirmSeq = 0;
 
 function syncProjectFromHistory(): void {
   project = { ...project, scene: history.state };
@@ -83,7 +85,10 @@ ipcMain.handle("project:save", async (_e, dir?: string) => {
     return { ok: false, diagnostics: [{ code: "NO_DIR", message: "no project dir" }] };
   }
   const result = await saveProject(target, project);
-  if (result.ok) projectDir = target;
+  if (result.ok) {
+    projectDir = target;
+    await savePackToDir(pack, target);
+  }
   return result;
 });
 
@@ -92,7 +97,8 @@ ipcMain.handle("project:load", async (_e, dir: string) => {
   if (!result.ok) return result;
   project = result.value;
   history = new History(project.scene);
-  pack = loadSamplePack();
+  const packResult = await loadPackFromDir(dir);
+  pack = packResult.ok ? packResult.value : loadSamplePack();
   projectDir = dir;
   return { ok: true, value: { project, pack } };
 });
@@ -144,10 +150,13 @@ ipcMain.handle(
       history,
       pack,
       commercial: project.commercial,
+      currency: project.settings.currency,
       confirm: (prompt, data) =>
         new Promise((resolve) => {
-          pendingConfirm = { resolve, prompt, payload: data };
+          const id = String(++confirmSeq);
+          pendingConfirms.set(id, { resolve, prompt, payload: data });
           mainWindow?.webContents.send("agent:confirm-request", {
+            id,
             prompt,
             payload: data,
           });
@@ -158,9 +167,12 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle("agent:confirm", (_e, accepted: boolean) => {
-  pendingConfirm?.resolve(accepted);
-  pendingConfirm = null;
+ipcMain.handle("agent:confirm", (_e, id: string, accepted: boolean) => {
+  const pending = pendingConfirms.get(id);
+  if (pending) {
+    pending.resolve(accepted);
+    pendingConfirms.delete(id);
+  }
   return { ok: true };
 });
 
@@ -260,8 +272,30 @@ ipcMain.handle("commercial:handoff", async (_e, quoteId: string) => {
 
 ipcMain.handle("catalog:importCsv", async (_e, text: string) => {
   const result = importCatalogListCsv(text);
-  if (result.ok) pack = result.value;
+  if (result.ok) {
+    pack = result.value;
+    project.catalogPackId = pack.id;
+    project.catalogPackPath = null;
+  }
   return result;
+});
+
+ipcMain.handle("file:readText", async (_e, path: string) => {
+  try {
+    const text = await readFile(path, "utf8");
+    return { ok: true, value: text };
+  } catch (e) {
+    return {
+      ok: false,
+      diagnostics: [
+        {
+          code: "FILE_READ_FAILED",
+          severity: "error",
+          message: e instanceof Error ? e.message : String(e),
+        },
+      ],
+    };
+  }
 });
 
 ipcMain.handle("dialog:openDirectory", async () => {

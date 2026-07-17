@@ -21,6 +21,7 @@ export type ToolContext = {
   history: History;
   pack: CatalogPack;
   commercial: CommercialState;
+  currency: string;
   mode: AgentMode;
   settings: AgentSettings;
   confirm: (prompt: string, payload: unknown) => Promise<boolean>;

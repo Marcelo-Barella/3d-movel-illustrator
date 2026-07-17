@@ -17,6 +17,7 @@ function ctx(): ToolContext {
       quotes: [],
       activeQuoteId: null,
     },
+    currency: "BRL",
     mode: "command",
     settings: DEFAULT_SETTINGS,
     confirm: async () => true,

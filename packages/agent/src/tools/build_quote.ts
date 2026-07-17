@@ -50,6 +50,7 @@ export const buildQuoteTool: ToolSpec = {
       ctx.pack,
       table,
       parsed.customerId,
+      ctx.currency,
     );
     ctx.commercial.quotes.push(quote);
     ctx.commercial.activeQuoteId = quote.id;

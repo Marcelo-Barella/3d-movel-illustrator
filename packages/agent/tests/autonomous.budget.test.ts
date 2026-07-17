@@ -36,6 +36,7 @@ describe("autonomous budget", () => {
         quotes: [],
         activeQuoteId: null,
       },
+      currency: "BRL",
       mode: "autonomous",
       settings: { maxSteps: 2, autonomousAutoApplySmallPlans: false },
       confirm: async () => true,

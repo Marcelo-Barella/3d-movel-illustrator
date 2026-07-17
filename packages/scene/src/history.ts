@@ -48,6 +48,21 @@ export class History {
     return ok(this.cached);
   }
 
+  cancelGroup(): Result<SceneState> {
+    if (!this.openGroup) {
+      return err([
+        {
+          code: "HISTORY_NO_GROUP",
+          severity: "error",
+          message: "no open history group",
+        },
+      ]);
+    }
+    this.openGroup = null;
+    this.cached = this.replay();
+    return ok(this.cached);
+  }
+
   push(cmd: SceneCommand): Result<SceneState> {
     if (this.openGroup) {
       const applied = applyCommand(this.cached, cmd);

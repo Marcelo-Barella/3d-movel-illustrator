@@ -36,6 +36,7 @@ export async function runChat(input: {
   history: History;
   pack: CatalogPack;
   commercial: CommercialState;
+  currency: string;
   confirm: (prompt: string, payload: unknown) => Promise<boolean>;
   maxRounds?: number;
 }): Promise<{ messages: ChatMessage[]; diagnostics: unknown[] }> {
@@ -47,6 +48,7 @@ export async function runChat(input: {
     history: input.history,
     pack: input.pack,
     commercial: input.commercial,
+    currency: input.currency,
     mode: input.mode,
     settings: DEFAULT_SETTINGS,
     confirm: input.confirm,
@@ -58,6 +60,6 @@ export async function runChat(input: {
     mode: input.mode,
     messages: input.messages,
     ctx,
-    maxRounds: input.maxRounds ?? 8,
+    maxRounds: input.maxRounds ?? DEFAULT_SETTINGS.maxSteps,
   });
 }

@@ -19,6 +19,7 @@ describe("build policy", () => {
         quotes: [],
         activeQuoteId: null,
       },
+      currency: "BRL",
       mode: "build",
       settings: DEFAULT_SETTINGS,
       confirm: async () => {

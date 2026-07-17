@@ -15,7 +15,7 @@ type ProjectStore = {
   providerId: string;
   model: string;
   messages: Array<{ role: string; content: string }>;
-  confirm: { prompt: string; payload: unknown } | null;
+  confirm: { id: string; prompt: string; payload: unknown } | null;
   selectedModuleId: string | null;
   setMode: (mode: AgentMode) => void;
   setProvider: (providerId: string, model: string) => void;
@@ -124,8 +124,9 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     });
   },
   resolveConfirm: async (accepted) => {
-    if (!window.movel) return;
-    await window.movel.agent.confirm(accepted);
+    const id = get().confirm?.id;
+    if (!window.movel || !id) return;
+    await window.movel.agent.confirm(id, accepted);
     set({ confirm: null });
     await get().refresh();
   },
