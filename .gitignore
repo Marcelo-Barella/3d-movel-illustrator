@@ -1,0 +1,15 @@
+node_modules
+dist
+.DS_Store
+*.log
+coverage
+.vite
+out
+release
+*.movelproj
+exports
+handoff
+.superpowers/sdd/*-brief.md
+.superpowers/sdd/*-report.md
+.superpowers/sdd/*-review*.md
+!.superpowers/sdd/progress.md
