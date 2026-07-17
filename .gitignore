@@ -1,14 +1,16 @@
 node_modules
 dist
+out
 .DS_Store
 *.log
 coverage
 .vite
-out
 release
 *.movelproj
 exports
 handoff
+test-results
+playwright-report
 .superpowers/sdd/*-brief.md
 .superpowers/sdd/*-report.md
 .superpowers/sdd/*-review*.md

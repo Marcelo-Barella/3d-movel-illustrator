@@ -1,0 +1,43 @@
+{
+  "name": "@movel/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test -c e2e/playwright.config.ts"
+  },
+  "dependencies": {
+    "@movel/agent": "workspace:*",
+    "@movel/catalog": "workspace:*",
+    "@movel/commercial": "workspace:*",
+    "@movel/importers": "workspace:*",
+    "@movel/production": "workspace:*",
+    "@movel/scene": "workspace:*",
+    "@movel/shared": "workspace:*",
+    "@react-three/drei": "^10.0.7",
+    "@react-three/fiber": "^9.1.2",
+    "exceljs": "^4.4.0",
+    "keytar": "^7.9.0",
+    "pdfkit": "^0.17.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.176.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@types/three": "^0.176.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "electron": "^36.3.1",
+    "electron-vite": "^3.1.0",
+    "typescript": "^5.8.3",
+    "vite": "6.3.5",
+    "vitest": "^3.2.4"
+  }
+}
