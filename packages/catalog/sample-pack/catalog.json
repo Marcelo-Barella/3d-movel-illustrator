@@ -1,0 +1,363 @@
+{
+  "id": "sample",
+  "name": "Movel Sample Pack",
+  "version": 1,
+  "materials": [
+    {
+      "id": "melamine_18",
+      "name": "Melamine 18mm",
+      "thicknessMm": 18,
+      "grainDefault": "length",
+      "sku": "MAT-MEL-18"
+    },
+    {
+      "id": "mdf_15",
+      "name": "MDF 15mm",
+      "thicknessMm": 15,
+      "grainDefault": "none",
+      "sku": "MAT-MDF-15"
+    }
+  ],
+  "hardware": [
+    { "sku": "HW-HINGE-35", "name": "Hinge 35mm", "unit": "ea" },
+    { "sku": "HW-SLIDE-450", "name": "Drawer slide 450mm", "unit": "pair" },
+    { "sku": "HW-SHELF-PIN", "name": "Shelf pin", "unit": "ea" },
+    { "sku": "HW-CONFIRMAT", "name": "Confirmat screw", "unit": "ea" }
+  ],
+  "modules": [
+    {
+      "id": "base_box",
+      "name": "Base Box",
+      "category": "base",
+      "priceSku": "MOD-BASE-BOX",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "min": 200, "max": 1200, "default": 600 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "min": 400, "max": 900, "default": 720 },
+        { "key": "depthMm", "label": "Depth", "kind": "number", "unit": "mm", "min": 300, "max": 700, "default": 560 },
+        { "key": "shelfCount", "label": "Shelves", "kind": "number", "min": 0, "max": 4, "default": 1 }
+      ],
+      "defaultMaterials": { "carcass": "melamine_18" },
+      "bom": [
+        { "sku": "HW-CONFIRMAT", "description": "Confirmat screws", "qtyFormula": "8" },
+        { "sku": "HW-SHELF-PIN", "description": "Shelf pins", "qtyFormula": "shelfCount * 4" }
+      ],
+      "panels": [
+        {
+          "id": "left",
+          "label": "Left side",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [
+            { "kind": "contour", "shape": "rect" },
+            { "kind": "drill", "xFormula": "32", "yFormula": "37", "diameterMm": 5, "depthMm": 12 },
+            { "kind": "groove", "xFormula": "0", "yFormula": "depthMm / 2", "lengthFormula": "heightMm", "widthMm": 4, "depthMm": 8, "axis": "Y" }
+          ]
+        },
+        {
+          "id": "right",
+          "label": "Right side",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "bottom",
+          "label": "Bottom",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "width",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "top",
+          "label": "Top rail",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "80",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "back",
+          "label": "Back",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "heightMm - 36",
+          "thicknessMm": 18,
+          "grain": "none",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        }
+      ]
+    },
+    {
+      "id": "wall_box",
+      "name": "Wall Box",
+      "category": "wall",
+      "priceSku": "MOD-WALL-BOX",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "default": 600 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "default": 720 },
+        { "key": "depthMm", "label": "Depth", "kind": "number", "unit": "mm", "default": 320 }
+      ],
+      "defaultMaterials": { "carcass": "melamine_18" },
+      "bom": [
+        { "sku": "HW-CONFIRMAT", "description": "Confirmat screws", "qtyFormula": "8" },
+        { "sku": "HW-HINGE-35", "description": "Hinges", "qtyFormula": "2" }
+      ],
+      "panels": [
+        {
+          "id": "left",
+          "label": "Left",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "right",
+          "label": "Right",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "top",
+          "label": "Top",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "width",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "bottom",
+          "label": "Bottom",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "width",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        }
+      ]
+    },
+    {
+      "id": "tall_box",
+      "name": "Tall Box",
+      "category": "tall",
+      "priceSku": "MOD-TALL-BOX",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "default": 600 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "default": 2100 },
+        { "key": "depthMm", "label": "Depth", "kind": "number", "unit": "mm", "default": 560 },
+        { "key": "shelfCount", "label": "Shelves", "kind": "number", "default": 4 }
+      ],
+      "defaultMaterials": { "carcass": "melamine_18" },
+      "bom": [
+        { "sku": "HW-CONFIRMAT", "description": "Confirmat screws", "qtyFormula": "12" },
+        { "sku": "HW-SHELF-PIN", "description": "Shelf pins", "qtyFormula": "shelfCount * 4" }
+      ],
+      "panels": [
+        {
+          "id": "left",
+          "label": "Left",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "right",
+          "label": "Right",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "top",
+          "label": "Top",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "width",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "bottom",
+          "label": "Bottom",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "width",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        }
+      ]
+    },
+    {
+      "id": "shelf_unit",
+      "name": "Shelf Unit",
+      "category": "shelf",
+      "priceSku": "MOD-SHELF",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "default": 800 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "default": 1800 },
+        { "key": "depthMm", "label": "Depth", "kind": "number", "unit": "mm", "default": 300 },
+        { "key": "shelfCount", "label": "Shelves", "kind": "number", "default": 5 }
+      ],
+      "defaultMaterials": { "carcass": "melamine_18" },
+      "bom": [
+        { "sku": "HW-SHELF-PIN", "description": "Shelf pins", "qtyFormula": "shelfCount * 4" }
+      ],
+      "panels": [
+        {
+          "id": "side_l",
+          "label": "Left",
+          "materialKey": "carcass",
+          "lengthFormula": "heightMm",
+          "widthFormula": "depthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "shelf",
+          "label": "Shelf",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 36",
+          "widthFormula": "depthMm - 2",
+          "thicknessMm": 18,
+          "grain": "width",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        }
+      ]
+    },
+    {
+      "id": "door_panel",
+      "name": "Door Panel",
+      "category": "door",
+      "priceSku": "MOD-DOOR",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "default": 497 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "default": 716 }
+      ],
+      "defaultMaterials": { "door": "melamine_18" },
+      "bom": [
+        { "sku": "HW-HINGE-35", "description": "Hinges", "qtyFormula": "2" }
+      ],
+      "panels": [
+        {
+          "id": "door",
+          "label": "Door",
+          "materialKey": "door",
+          "lengthFormula": "heightMm",
+          "widthFormula": "widthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [
+            { "kind": "contour", "shape": "rect" },
+            { "kind": "drill", "xFormula": "22.5", "yFormula": "100", "diameterMm": 35, "depthMm": 13 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drawer_box",
+      "name": "Drawer Box",
+      "category": "drawer",
+      "priceSku": "MOD-DRAWER",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "default": 550 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "default": 140 },
+        { "key": "depthMm", "label": "Depth", "kind": "number", "unit": "mm", "default": 500 }
+      ],
+      "defaultMaterials": { "carcass": "mdf_15" },
+      "bom": [
+        { "sku": "HW-SLIDE-450", "description": "Drawer slides", "qtyFormula": "1" }
+      ],
+      "panels": [
+        {
+          "id": "front",
+          "label": "Front",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm",
+          "widthFormula": "heightMm",
+          "thicknessMm": 15,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        },
+        {
+          "id": "side",
+          "label": "Side",
+          "materialKey": "carcass",
+          "lengthFormula": "depthMm",
+          "widthFormula": "heightMm",
+          "thicknessMm": 15,
+          "grain": "length",
+          "ops": [
+            { "kind": "contour", "shape": "rect" },
+            { "kind": "groove", "xFormula": "0", "yFormula": "12", "lengthFormula": "depthMm", "widthMm": 4, "depthMm": 6, "axis": "X" }
+          ]
+        },
+        {
+          "id": "bottom",
+          "label": "Bottom",
+          "materialKey": "carcass",
+          "lengthFormula": "widthMm - 30",
+          "widthFormula": "depthMm - 30",
+          "thicknessMm": 15,
+          "grain": "none",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        }
+      ]
+    },
+    {
+      "id": "filler",
+      "name": "Filler",
+      "category": "filler",
+      "priceSku": "MOD-FILLER",
+      "params": [
+        { "key": "widthMm", "label": "Width", "kind": "number", "unit": "mm", "default": 50 },
+        { "key": "heightMm", "label": "Height", "kind": "number", "unit": "mm", "default": 720 },
+        { "key": "depthMm", "label": "Depth", "kind": "number", "unit": "mm", "default": 560 }
+      ],
+      "defaultMaterials": { "panel": "melamine_18" },
+      "bom": [
+        { "sku": "HW-CONFIRMAT", "description": "Screws", "qtyFormula": "2" }
+      ],
+      "panels": [
+        {
+          "id": "filler",
+          "label": "Filler panel",
+          "materialKey": "panel",
+          "lengthFormula": "heightMm",
+          "widthFormula": "widthMm",
+          "thicknessMm": 18,
+          "grain": "length",
+          "ops": [{ "kind": "contour", "shape": "rect" }]
+        }
+      ]
+    }
+  ]
+}

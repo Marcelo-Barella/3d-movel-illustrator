@@ -1,0 +1,23 @@
+{
+  "name": "3d-movel-illustrator",
+  "private": true,
+  "packageManager": "pnpm@10.33.3",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "pnpm --filter @movel/desktop dev",
+    "test:e2e": "pnpm --filter @movel/desktop test:e2e",
+    "acceptance": "node scripts/acceptance-check.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild",
+      "keytar"
+    ]
+  }
+}
